@@ -1,0 +1,327 @@
+{% extends 'base.html' %}
+
+{% block title %}Preferences - WeatherAlert{% endblock %}
+
+{% block custom_css %}
+<style>
+    .settings-container {
+        @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+    }
+
+    .settings-section {
+        @apply bg-white rounded-lg shadow-sm p-6 mb-6;
+    }
+
+    .section-title {
+        @apply text-lg font-medium text-gray-900 mb-4;
+    }
+
+    .form-group {
+        @apply mb-6;
+    }
+
+    .form-label {
+        @apply block text-sm font-medium text-gray-700 mb-1;
+    }
+
+    .form-input {
+        @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+    }
+
+    .form-select {
+        @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+    }
+
+    .form-checkbox-group {
+        @apply space-y-2;
+    }
+
+    .checkbox-item {
+        @apply flex items-center;
+    }
+
+    .form-checkbox {
+        @apply h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded;
+    }
+
+    .checkbox-label {
+        @apply ml-2 text-sm text-gray-700;
+    }
+
+    .btn-save {
+        @apply inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+
+    .toggle-switch {
+        @apply relative inline-flex items-center cursor-pointer;
+    }
+
+    .toggle-input {
+        @apply sr-only;
+    }
+
+    .toggle-slider {
+        @apply w-11 h-6 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out;
+    }
+
+    .toggle-slider:after {
+        content: '';
+        @apply absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full transition-transform duration-200 ease-in-out;
+    }
+
+    .toggle-input:checked + .toggle-slider {
+        @apply bg-blue-600;
+    }
+
+    .toggle-input:checked + .toggle-slider:after {
+        @apply transform translate-x-5;
+    }
+
+    .toggle-input:focus + .toggle-slider {
+        @apply ring-2 ring-offset-2 ring-blue-500;
+    }
+
+    .notification-preview {
+        @apply mt-4 p-4 border border-gray-200 rounded-md bg-gray-50;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">Account Preferences</h1>
+
+    <form id="preferencesForm" class="space-y-6">
+        <!-- Account Settings -->
+        <div class="settings-section">
+            <h2 class="section-title">Account Settings</h2>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" value="user@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" value="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Time Zone</label>
+                    <select class="form-select">
+                        <option value="America/New_York">Eastern Time (ET)</option>
+                        <option value="America/Chicago">Central Time (CT)</option>
+                        <option value="America/Denver">Mountain Time (MT)</option>
+                        <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Language</label>
+                    <select class="form-select">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Preferences -->
+        <div class="settings-section">
+            <h2 class="section-title">Notification Preferences</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="form-label">Notification Methods</label>
+                    <div class="form-checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="form-checkbox" checked>
+                            <label class="checkbox-label">Email Notifications</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="form-checkbox" checked>
+                            <label class="checkbox-label">SMS Notifications</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="form-checkbox" checked>
+                            <label class="checkbox-label">Push Notifications</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label">Notification Frequency</label>
+                    <select class="form-select">
+                        <option>Immediately</option>
+                        <option>Hourly Digest</option>
+                        <option>Daily Digest</option>
+                        <option>Weekly Summary</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="form-label">Quiet Hours</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm text-gray-600">Start Time</label>
+                            <input type="time" class="form-input" value="22:00">
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">End Time</label>
+                            <input type="time" class="form-input" value="07:00">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label">Notification Preview</label>
+                    <div class="notification-preview">
+                        <div class="text-sm text-gray-600">Sample Weather Alert</div>
+                        <div class="mt-2">⛈️ Severe thunderstorm warning for New York City. Expected within the next hour.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Display Preferences -->
+        <div class="settings-section">
+            <h2 class="section-title">Display Preferences</h2>
+            
+            <div class="space-y-6">
+                <div class="form-group">
+                    <label class="form-label">Temperature Unit</label>
+                    <div class="flex space-x-4">
+                        <label class="checkbox-item">
+                            <input type="radio" name="tempUnit" value="fahrenheit" checked class="form-radio">
+                            <span class="ml-2">Fahrenheit (°F)</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="radio" name="tempUnit" value="celsius" class="form-radio">
+                            <span class="ml-2">Celsius (°C)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Wind Speed Unit</label>
+                    <select class="form-select">
+                        <option value="mph">Miles per hour (mph)</option>
+                        <option value="kph">Kilometers per hour (km/h)</option>
+                        <option value="ms">Meters per second (m/s)</option>
+                        <option value="knots">Knots</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Precipitation Unit</label>
+                    <select class="form-select">
+                        <option value="in">Inches (in)</option>
+                        <option value="mm">Millimeters (mm)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Map Display</label>
+                    <div class="space-y-2">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="toggle-input" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="ml-3 text-sm">Show radar overlay</span>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="toggle-input" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="ml-3 text-sm">Show temperature overlay</span>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                            <span class="ml-3 text-sm">Show wind overlay</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Privacy -->
+        <div class="settings-section">
+            <h2 class="section-title">Data Privacy</h2>
+            
+            <div class="space-y-4">
+                <label class="toggle-switch">
+                    <input type="checkbox" class="toggle-input" checked>
+                    <span class="toggle-slider"></span>
+                    <span class="ml-3 text-sm">Share anonymous usage data to improve service</span>
+                </label>
+
+                <label class="toggle-switch">
+                    <input type="checkbox" class="toggle-input" checked>
+                    <span class="toggle-slider"></span>
+                    <span class="ml-3 text-sm">Allow location tracking for better accuracy</span>
+                </label>
+
+                <div class="mt-4" style="display: none;">
+                    <button type="button" class="text-sm text-blue-600 hover:text-blue-500">
+                        Download my data
+                    </button>
+                    <button type="button" class="ml-4 text-sm text-red-600 hover:text-red-500">
+                        Delete my account
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="flex justify-end">
+            <button type="submit" class="btn-save">
+                Save Preferences
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script>
+    // Form submission handler
+    document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // TODO: Implement form submission
+        alert('Preferences saved successfully!');
+    });
+
+    // Toggle switches
+    document.querySelectorAll('.toggle-input').forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            // TODO: Handle toggle changes
+        });
+    });
+
+    // Temperature unit change handler
+    document.querySelectorAll('input[name="tempUnit"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            // TODO: Handle temperature unit change
+        });
+    });
+
+    // Notification preview updates
+    function updateNotificationPreview() {
+        // TODO: Update notification preview based on selected preferences
+    }
+
+    // Time zone handler
+    document.querySelector('select[name="timezone"]').addEventListener('change', function(e) {
+        // TODO: Handle timezone change
+    });
+
+    // Data privacy handlers
+    document.querySelector('button:contains("Download my data")').addEventListener('click', function() {
+        // TODO: Implement data download
+    });
+
+    document.querySelector('button:contains("Delete my account")').addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            // TODO: Implement account deletion
+        }
+    });
+</script>
+{% endblock %}

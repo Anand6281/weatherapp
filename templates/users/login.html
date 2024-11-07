@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - WeatherAlert{% endblock %}
+
+{% block custom_css %}
+<style>
+    .login-container {
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .form-input {
+        @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+    }
+
+    .form-label {
+        @apply block text-sm font-medium text-gray-700 mb-1;
+    }
+
+    .form-error {
+        @apply mt-1 text-sm text-red-600;
+    }
+
+    .side-image {
+        background-image: url('https://images.unsplash.com/photo-1538688525198-9b88f6f53126?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .side-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(37, 99, 235, 0.7), rgba(30, 64, 175, 0.7));
+    }
+
+    .side-image-content {
+        position: relative;
+        z-index: 1;
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-5xl mx-auto login-container">
+        <div class="flex flex-col lg:flex-row">
+            <!-- Side Image - Hidden on mobile -->
+            <div class="hidden lg:flex lg:w-1/2 side-image">
+                <div class="side-image-content w-full flex flex-col justify-center items-center text-white p-12">
+                    <i class="fas fa-cloud-sun text-6xl mb-6"></i>
+                    <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+                    <p class="text-lg text-center mb-8">
+                        Log in to receive real-time weather alerts and personalized notifications.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-xl"></i>
+                            <span>Instant Weather Notifications</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-xl"></i>
+                            <span>Customizable Alert Settings</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-check-circle text-xl"></i>
+                            <span>Location-Based Updates</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="lg:w-1/2 p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-cloud-sun text-blue-600 text-5xl mb-4"></i>
+                    <h2 class="text-3xl font-extrabold text-gray-900">Welcome Back</h2>
+                    <p class="mt-2 text-sm text-gray-600">
+                        Don't have an account? 
+                        <a href="{% url 'users:register' %}" class="font-medium text-blue-600 hover:text-blue-500">Create one</a>
+                    </p>
+                </div>
+                <form class="space-y-6" method="POST" id="loginForm" action="{% url 'users:login' %}">
+                    {% csrf_token %}
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="form-label">Email address</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class='error-message'>{{ form.email.errors }}</p>
+                        {% endif %}
+                        <div class="form-error hidden" id="email-error"></div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label for="password" class="form-label">Password</label>
+                        <div class="relative">
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <p class='error-message'>{{ form.password.errors }}</p>
+                            {% endif %}
+                            <button type="button" id="togglePassword" 
+                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-error hidden" id="password-error"></div>
+                    </div>
+
+                    <!-- Remember Me Checkbox -->
+                    <div class="flex items-center" style="display: none;">
+                        <div class="flex items-center h-5">
+                            <input type="checkbox" name="remember" id="remember" 
+                                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        </div>
+                        <div class="ml-2">
+                            <label for="remember" class="text-sm text-gray-600">Remember me</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" 
+                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Log in
+                        </button>
+                    </div>
+
+                    <!-- Forgot Password Link -->
+                    <div class="text-sm text-center">
+                        <a href="#" class="text-blue-600 hover:text-blue-500">Forgot your password?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script>
+$(document).ready(function() {
+    // Toggle password visibility
+    $('#togglePassword').click(function() {
+        const passwordInput = $('#password');
+        const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+        passwordInput.attr('type', type);
+        $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+    });
+
+    // Form validation (optional)
+    $('#loginForm2').on('submit', function(e) {
+        e.preventDefault();
+        let isValid = true;
+        
+        // Reset errors
+        $('.form-error').addClass('hidden').text('');
+
+        // Email validation
+        const email = $('#email').val();
+        if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            $('#email-error').removeClass('hidden').text('Please enter a valid email address');
+            isValid = false;
+        }
+
+        // Password validation
+        const password = $('#password').val();
+        if (password.length < 6) {
+            $('#password-error').removeClass('hidden').text('Password must be at least 6 characters long');
+            isValid = false;
+        }
+
+        // If valid, submit the form
+        if (isValid) {
+            this.submit();
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+
+{% block title %}Weather Map - WeatherAlert{% endblock %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<style>
+    .map-container {
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .weather-controls {
+        @apply bg-white p-4 rounded-lg shadow-sm;
+    }
+
+    .control-button {
+        @apply px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150;
+    }
+
+    .control-button.active {
+        @apply bg-blue-600 text-white;
+    }
+
+    .control-button:not(.active) {
+        @apply text-gray-700 hover:bg-gray-100;
+    }
+
+    .layer-control {
+        @apply flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer;
+    }
+
+    .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: rgba(156, 163, 175, 0.5);
+        border-radius: 3px;
+    }
+
+    #map {
+        width: 100%;
+        height: calc(100vh - 12rem);
+        background-color: #f3f4f6;
+    }
+
+    .legend {
+        @apply bg-white rounded-lg shadow-sm p-4;
+    }
+
+    .weather-info-panel {
+        @apply bg-white rounded-lg shadow-sm p-4;
+        max-height: calc(100vh - 12rem);
+        overflow-y: auto;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Top Navigation Bar -->
+    <div class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold text-gray-900">Weather Map</h1>
+                    <div class="hidden sm:flex space-x-2">
+                        <button class="control-button active" data-map-type="streets">
+                            <i class="fas fa-map-marked-alt mr-2"></i>Map View
+                        </button>
+                        <button class="control-button" data-map-type="satellite">
+                            <i class="fas fa-satellite mr-2"></i>Satellite
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" id="location-search" placeholder="Search location..." 
+                               class="w-64 px-4 py-2 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                        <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+                    </div>
+                    <button class="control-button" id="current-location" style="display: none;">
+                        <i class="fas fa-location-arrow mr-2"></i>Current Location
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex gap-6">
+
+            <!-- Main Map Area -->
+            <div class="flex-1 map-container">
+                <div id="map"></div>
+            </div>
+
+            <!-- Right Sidebar - Weather Information -->
+            <div class="w-80">
+                <div class="weather-info-panel custom-scrollbar">
+                    <div class="text-center p-4">
+                        <h2 class="text-2xl font-bold text-gray-900">Current Weather</h2>
+                        <p id="location-name" class="text-gray-600">Loading...</p>
+                        <div class="my-6">
+                            <i id="weather-icon" class="fas fa-cloud-sun text-6xl text-blue-500"></i>
+                            <div id="current-temp" class="text-4xl font-bold mt-2">--°C</div>
+                            <div id="weather-description" class="text-gray-600">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-gray-600 text-sm">Humidity</div>
+                                <div id="humidity" class="font-medium">--%</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-gray-600 text-sm">Wind Speed</div>
+                                <div id="wind-speed" class="font-medium">-- km/h</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-gray-600 text-sm">Pressure</div>
+                                <div id="pressure" class="font-medium">-- hPa</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-gray-600 text-sm">Visibility</div>
+                                <div id="visibility" class="font-medium">-- km</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-200 mt-4 pt-4" style="display: none;">
+                        <h3 class="font-medium text-gray-900 mb-3">Hourly Forecast</h3>
+                        <div id="hourly-forecast" class="space-y-3">
+                            <!-- Hourly forecast will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-200 mt-4 pt-4">
+                        <h3 class="font-medium text-gray-900 mb-3">Daily Forecast</h3>
+                        <div id="daily-forecast" class="space-y-3">
+                            <!-- Daily forecast will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+$(document).ready(function() {
+    let map;
+    let currentTileLayer;
+    const WEATHER_API_KEY = '23f13c159db640129d5144658240411'; // Replace with your actual WeatherAPI key
+
+    // Function to initialize the map
+    function initMap(lat, lon) {
+        map = L.map('map').setView([lat, lon], 13);
+        
+        // Add OpenStreetMap tiles
+        currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add a marker for the current location
+        L.marker([lat, lon]).addTo(map)
+            .bindPopup('Your current location')
+            .openPopup();
+
+        // Add click event to update weather on map click
+        map.on('click', function(e) {
+            updateWeatherData(e.latlng.lat, e.latlng.lng);
+        });
+    }
+
+    // Function to get the user's current location
+    function getCurrentLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const { latitude, longitude } = position.coords;
+                    initMap(latitude, longitude);
+                    updateWeatherData(latitude, longitude);
+                },
+                function(error) {
+                    console.error("Error getting location:", error);
+                    // Default to New York City if geolocation fails
+                    initMap(40.7128, -74.0060);
+                    updateWeatherData(40.7128, -74.0060);
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+            // Default to New York City if geolocation is not supported
+            initMap(40.7128, -74.0060);
+            updateWeatherData(40.7128, -74.0060);
+        }
+    }
+
+    // Call getCurrentLocation to initialize the map
+    getCurrentLocation();
+
+    // Map type toggle
+    $('[data-map-type]').click(function() {
+        const mapType = $(this).data('map-type');
+        $('[data-map-type]').removeClass('active');
+        $(this).addClass('active');
+
+        map.removeLayer(currentTileLayer);
+
+        switch (mapType) {
+            case 'streets':
+                currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                });
+                break;
+            case 'satellite':
+                currentTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                });
+                break;
+        }
+
+        currentTileLayer.addTo(map);
+    });
+
+    // Search functionality
+    $('#location-search').on('keypress', function(e) {
+        if (e.which === 13) {
+            const searchQuery = $(this).val();
+            searchLocation(searchQuery);
+        }
+    });
+
+    // Current location button
+    $('#current-location').click(function() {
+        getCurrentLocation();
+    });
+
+    // Function to search for a location
+    function searchLocation(query) {
+        $.ajax({
+            url: `https://api.weatherapi.com/v1/search.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(query)}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.length > 0) {
+                    const { lat, lon } = data[0];
+                    map.setView([lat, lon], 13);
+                    updateWeatherData(lat, lon);
+                } else {
+                    alert('Location not found. Please try again.');
+                }
+            },
+            error: function() {
+                alert('Error searching for location. Please try again.');
+            }
+        });
+    }
+
+    // Function to update weather data
+    function updateWeatherData(lat, lon) {
+        $.ajax({
+            url: `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=3`,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                updateCurrentWeather(data.current, data.location);
+                updateDailyForecast(data.forecast.forecastday);
+            },
+            error: function() {
+                alert('Error fetching weather data. Please try again.');
+            }
+        });
+    }
+
+    // Function to update current weather display
+    function updateCurrentWeather(current, location) {
+        $('#location-name').text(location.name);
+        $('#current-temp').text(`${Math.round(current.temp_c)}°C`);
+        $('#weather-description').text(current.condition.text);
+        $('#weather-icon').attr('src', `https:${current.condition.icon}`);
+        $('#humidity').text(`${current.humidity}%`);
+        $('#wind-speed').text(`${current.wind_kph} km/h`);
+        $('#pressure').text(`${current.pressure_mb} hPa`);
+        $('#visibility').text(`${current.vis_km} km`);
+    }
+
+    // Function to update daily forecast (3 days)
+    function updateDailyForecast(daily) {
+        const dailyHtml = daily.map(day => `
+            <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+                <span class="text-gray-600">${new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}</span>
+                <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" class="w-8 h-8">
+                <div class="text-right">
+                    <span class="font-medium">${Math.round(day.day.maxtemp_c)}°C</span>
+                    <span class="text-gray-400 text-sm ml-2">${Math.round(day.day.mintemp_c)}°C</span>
+                </div>
+            </div>
+        `).join('');
+        $('#daily-forecast').html(dailyHtml);
+    }
+});
+</script>
+{% endblock %}

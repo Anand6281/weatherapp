@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+
+{% block title %}WeatherAlert - Real-time Weather Alerts{% endblock %}
+
+{% block custom_css %}
+<style>
+    .feature-card {
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .weather-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover .weather-icon {
+        transform: scale(1.1);
+    }
+
+    .hero-pattern {
+        background-color: #1e40af;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232563eb' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-pattern text-white rounded-xl shadow-lg mb-12 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-16">
+        <!-- Replace the existing grid with this new layout -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left side - Stay Ahead Banner -->
+            <div class="lg:w-1/2">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">Stay Ahead of the Weather</h1>
+                <p class="text-xl mb-8">Get real-time weather alerts and notifications tailored to your location and preferences.</p>
+                {% if not user.is_authenticated %}
+                <div class="space-x-4">
+                    <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">Get Started</a>
+                    <a href="#" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors inline-block">Login</a>
+                </div>
+                {% else %}
+                <a href="{% url 'main:alerts' %}" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">View My Alerts</a>
+                {% endif %}
+            </div>
+
+            <!-- Right side - Current Weather -->
+            <div class="lg:w-1/2">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-white">
+                    <div id="current-weather" class="text-center">
+                        <div class="animate-pulse">
+                            <div class="h-32 bg-white/20 rounded-lg mx-auto max-w-sm mb-4"></div>
+                            <div class="h-4 bg-white/20 rounded max-w-md mx-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Features Section -->
+<div class="mb-12">
+    <h2 class="text-3xl font-bold text-center mb-12">Key Features</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+        <!-- Real-time Alerts -->
+        <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
+            <div class="text-blue-600 mb-4">
+                <i class="fas fa-bell weather-icon text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Real-time Alerts</h3>
+            <p class="text-gray-600">Get instant notifications about weather changes that matter to you, from temperature drops to incoming rain.</p>
+        </div>
+
+        <!-- Location-based -->
+        <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
+            <div class="text-blue-600 mb-4">
+                <i class="fas fa-map-marker-alt weather-icon text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Location-based</h3>
+            <p class="text-gray-600">Automatic location detection ensures you receive relevant weather alerts for your current area.</p>
+        </div>
+
+        <!-- Customizable -->
+        <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
+            <div class="text-blue-600 mb-4">
+                <i class="fas fa-sliders-h weather-icon text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Customizable</h3>
+            <p class="text-gray-600">Set your preferences for alert types, frequency, and conditions that matter most to you.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Current Weather Section -->
+<div class="bg-white rounded-xl shadow-lg p-8 mb-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Current Weather</h2>
+    <div id="current-weather2" class="text-center">
+        <div class="animate-pulse">
+            <div class="h-32 bg-gray-200 rounded-lg mx-auto max-w-sm mb-4"></div>
+            <div class="h-4 bg-gray-200 rounded max-w-md mx-auto"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Forecast Section -->
+<div class="mb-12">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">7-Day Forecast</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        <!-- Forecast data will be inserted here by JavaScript -->
+    </div>
+</div>
+
+
+<!-- Call to Action -->
+<div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl shadow-lg p-8 text-white text-center">
+    <h2 class="text-3xl font-bold mb-4">Ready to Stay Weather-Aware?</h2>
+    <p class="text-xl mb-8">Join thousands of users who trust WeatherAlert for their weather notifications.</p>
+    {% if not user.is_authenticated %}
+    <a href="#" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">Sign Up Now</a>
+    {% else %}
+    <a href="{% url 'main:preferences' %}" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">Update Preferences</a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block custom_js %}
+<script>
+    $(document).ready(function() {
+        // Function to get user's location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        fetchWeather(position.coords.latitude, position.coords.longitude);
+                    },
+                    function(error) {
+                        console.error("Error getting location:", error);
+                        showError("Please enable location services to see weather information.");
+                    }
+                );
+            } else {
+                showError("Geolocation is not supported by your browser.");
+            }
+        }
+    
+        // Function to show error messages
+        function showError(message) {
+            $('#current-weather, #current-weather2').html(
+                '<div class="text-gray-600">' +
+                '<i class="fas fa-exclamation-circle text-4xl mb-4"></i>' +
+                '<p>' + message + '</p>' +
+                '</div>'
+            );
+        }
+    
+        // Function to fetch weather data
+        function fetchWeather(lat, lon) {
+            $.ajax({
+                url: "{% url 'main:get-weather' %}",
+                method: 'GET',
+                data: {
+                    lat: lat,
+                    lon: lon
+                },
+                success: function(data) {
+                    updateCurrentWeather(data.current);
+                    updateWeatherDisplay(data);
+                    updateForecast(data.forecast.forecastday);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching weather:", error);
+                    showError("Unable to fetch weather data. Please try again later.");
+                }
+            });
+        }
+
+        function updateWeatherDisplay(data) {
+            const current = data.current;
+            const iconUrl = current.condition.icon;
+            $('#current-weather').html(`
+                <div class="flex flex-col items-center">
+                    <div class="mb-6">
+                        <img src="${iconUrl}" alt="${current.condition.text}" class="w-20 h-20">
+                        <h3 class="text-4xl font-bold">${Math.round(current.temp_c)}°C</h3>
+                        <p class="text-xl opacity-90">${current.condition.text}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6 w-full max-w-md">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-wind w-6"></i>
+                            <span>${current.wind_mph} mph</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-tint w-6"></i>
+                            <span>${current.humidity}%</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-compress-arrows-alt w-6"></i>
+                            <span>${current.pressure_mb} mb</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-thermometer-half w-6"></i>
+                            <span>Feels like: ${Math.round(current.feelslike_f)}°F</span>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+    
+        // Function to update current weather display
+        function updateCurrentWeather(current) {
+            const iconUrl = current.condition.icon;
+            const html = `
+                <div class="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+                    <div class="text-center md:text-right">
+                        <img src="${iconUrl}" alt="${current.condition.text}" class="w-20 h-20 mx-auto md:ml-auto md:mr-0">
+                        <h3 class="text-4xl font-bold text-gray-800">${Math.round(current.temp_f)}°F</h3>
+                        <p class="text-xl text-gray-600">${current.condition.text}</p>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <div class="space-y-4">
+                            <p class="flex items-center justify-center md:justify-start text-gray-600">
+                                <i class="fas fa-wind w-8"></i>
+                                <span>Wind: ${current.wind_mph} mph</span>
+                            </p>
+                            <p class="flex items-center justify-center md:justify-start text-gray-600">
+                                <i class="fas fa-tint w-8"></i>
+                                <span>Humidity: ${current.humidity}%</span>
+                            </p>
+                            <p class="flex items-center justify-center md:justify-start text-gray-600">
+                                <i class="fas fa-compress-arrows-alt w-8"></i>
+                                <span>Pressure: ${current.pressure_mb} mb</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('#current-weather2').html(html);
+        }
+    
+        // Function to update forecast display
+        function updateForecast(forecastDays) {
+            const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            let forecastHtml = '';
+    
+            forecastDays.forEach((day, index) => {
+                const date = new Date(day.date);
+                const dayOfWeek = daysOfWeek[date.getDay()];
+                forecastHtml += `
+                    <div class="bg-white rounded-xl p-4 text-center shadow-sm hover:shadow-md transition-all duration-300">
+                        <p class="text-gray-600 font-medium">${dayOfWeek}</p>
+                        <div class="my-3">
+                            <img src="${day.day.condition.icon}" alt="${day.day.condition.text}" class="w-8 h-8 mx-auto">
+                        </div>
+                        <p class="text-gray-900 font-bold">${Math.round(day.day.maxtemp_c)}°C</p>
+                        <p class="text-gray-500 text-sm">${Math.round(day.day.mintemp_c)}°C</p>
+                    </div>
+                `;
+            });
+    
+            $('.grid.grid-cols-2.md\\:grid-cols-4.lg\\:grid-cols-7.gap-4').html(forecastHtml);
+        }
+    
+        // Initialize weather display
+        getUserLocation();
+    });
+</script>
+{% endblock %}
