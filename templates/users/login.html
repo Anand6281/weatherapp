@@ -57,22 +57,22 @@
             <!-- Side Image - Hidden on mobile -->
             <div class="hidden lg:flex lg:w-1/2 side-image">
                 <div class="side-image-content w-full flex flex-col justify-center items-center text-white p-12">
-                    <i class="fas fa-cloud-sun text-6xl mb-6"></i>
+                    <em class="fas fa-cloud-sun text-6xl mb-6"></em>
                     <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
                     <p class="text-lg text-center mb-8">
                         Log in to receive real-time weather alerts and personalized notifications.
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-check-circle text-xl"></i>
+                            <em class="fas fa-check-circle text-xl"></em>
                             <span>Instant Weather Notifications</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-check-circle text-xl"></i>
+                            <em class="fas fa-check-circle text-xl"></em>
                             <span>Customizable Alert Settings</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-check-circle text-xl"></i>
+                            <em class="fas fa-check-circle text-xl"></em>
                             <span>Location-Based Updates</span>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
             <!-- Login Form -->
             <div class="lg:w-1/2 p-8">
                 <div class="text-center mb-8">
-                    <i class="fas fa-cloud-sun text-blue-600 text-5xl mb-4"></i>
+                    <em class="fas fa-cloud-sun text-blue-600 text-5xl mb-4"></em>
                     <h2 class="text-3xl font-extrabold text-gray-900">Welcome Back</h2>
                     <p class="mt-2 text-sm text-gray-600">
                         Don't have an account? 
@@ -94,7 +94,7 @@
 
                     <!-- Email Field -->
                     <div>
-                        <label for="email" class="form-label">Email address</label>
+                        <label for="id_email" class="form-label">Email address</label>
                         {{ form.email }}
                         {% if form.email.errors %}
                             <p class='error-message'>{{ form.email.errors }}</p>
@@ -104,7 +104,7 @@
 
                     <!-- Password Field -->
                     <div>
-                        <label for="password" class="form-label">Password</label>
+                        <label for="id_password" class="form-label">Password</label>
                         <div class="relative">
                             {{ form.password }}
                             {% if form.password.errors %}
@@ -112,7 +112,7 @@
                             {% endif %}
                             <button type="button" id="togglePassword" 
                                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500">
-                                <i class="fas fa-eye"></i>
+                                <em class="fas fa-eye"></em><span style="display: none;">.</span>
                             </button>
                         </div>
                         <div class="form-error hidden" id="password-error"></div>
@@ -139,7 +139,7 @@
 
                     <!-- Forgot Password Link -->
                     <div class="text-sm text-center">
-                        <a href="#" class="text-blue-600 hover:text-blue-500">Forgot your password?</a>
+                        <a href="/" class="text-blue-600 hover:text-blue-500">Forgot your password?</a>
                     </div>
                 </form>
             </div>

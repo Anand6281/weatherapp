@@ -39,8 +39,8 @@
                 <p class="text-xl mb-8">Get real-time weather alerts and notifications tailored to your location and preferences.</p>
                 {% if not user.is_authenticated %}
                 <div class="space-x-4">
-                    <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">Get Started</a>
-                    <a href="#" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors inline-block">Login</a>
+                    <a href="/" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">Get Started</a>
+                    <a href="/" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors inline-block">Login</a>
                 </div>
                 {% else %}
                 <a href="{% url 'main:alerts' %}" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">View My Alerts</a>
@@ -70,7 +70,7 @@
         <!-- Real-time Alerts -->
         <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
             <div class="text-blue-600 mb-4">
-                <i class="fas fa-bell weather-icon text-4xl"></i>
+                <em class="fas fa-bell weather-icon text-4xl"></em>
             </div>
             <h3 class="text-xl font-semibold mb-3">Real-time Alerts</h3>
             <p class="text-gray-600">Get instant notifications about weather changes that matter to you, from temperature drops to incoming rain.</p>
@@ -79,7 +79,7 @@
         <!-- Location-based -->
         <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
             <div class="text-blue-600 mb-4">
-                <i class="fas fa-map-marker-alt weather-icon text-4xl"></i>
+                <em class="fas fa-map-marker-alt weather-icon text-4xl"></em>
             </div>
             <h3 class="text-xl font-semibold mb-3">Location-based</h3>
             <p class="text-gray-600">Automatic location detection ensures you receive relevant weather alerts for your current area.</p>
@@ -88,7 +88,7 @@
         <!-- Customizable -->
         <div class="feature-card bg-white p-6 rounded-xl shadow-lg">
             <div class="text-blue-600 mb-4">
-                <i class="fas fa-sliders-h weather-icon text-4xl"></i>
+                <em class="fas fa-sliders-h weather-icon text-4xl"></em>
             </div>
             <h3 class="text-xl font-semibold mb-3">Customizable</h3>
             <p class="text-gray-600">Set your preferences for alert types, frequency, and conditions that matter most to you.</p>
@@ -121,7 +121,7 @@
     <h2 class="text-3xl font-bold mb-4">Ready to Stay Weather-Aware?</h2>
     <p class="text-xl mb-8">Join thousands of users who trust WeatherAlert for their weather notifications.</p>
     {% if not user.is_authenticated %}
-    <a href="#" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">Sign Up Now</a>
+    <a href="/" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">Sign Up Now</a>
     {% else %}
     <a href="{% url 'main:preferences' %}" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors inline-block">Update Preferences</a>
     {% endif %}
@@ -152,7 +152,7 @@
         function showError(message) {
             $('#current-weather, #current-weather2').html(
                 '<div class="text-gray-600">' +
-                '<i class="fas fa-exclamation-circle text-4xl mb-4"></i>' +
+                '<em class="fas fa-exclamation-circle text-4xl mb-4"></em>' +
                 '<p>' + message + '</p>' +
                 '</div>'
             );
@@ -186,24 +186,24 @@
                 <div class="flex flex-col items-center">
                     <div class="mb-6">
                         <img src="${iconUrl}" alt="${current.condition.text}" class="w-20 h-20">
-                        <h3 class="text-4xl font-bold">${Math.round(current.temp_c)}°C</h3>
+                        <div class="text-4xl font-bold h3">${Math.round(current.temp_c)}°C</div>
                         <p class="text-xl opacity-90">${current.condition.text}</p>
                     </div>
                     <div class="grid grid-cols-2 gap-6 w-full max-w-md">
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-wind w-6"></i>
+                            <em class="fas fa-wind w-6"></em>
                             <span>${current.wind_mph} mph</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-tint w-6"></i>
+                            <em class="fas fa-tint w-6"></em>
                             <span>${current.humidity}%</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-compress-arrows-alt w-6"></i>
+                            <em class="fas fa-compress-arrows-alt w-6"></em>
                             <span>${current.pressure_mb} mb</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-thermometer-half w-6"></i>
+                            <em class="fas fa-thermometer-half w-6"></em>
                             <span>Feels like: ${Math.round(current.feelslike_f)}°F</span>
                         </div>
                     </div>
@@ -218,21 +218,21 @@
                 <div class="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
                     <div class="text-center md:text-right">
                         <img src="${iconUrl}" alt="${current.condition.text}" class="w-20 h-20 mx-auto md:ml-auto md:mr-0">
-                        <h3 class="text-4xl font-bold text-gray-800">${Math.round(current.temp_f)}°F</h3>
+                        <div class="h3 text-4xl font-bold text-gray-800">${Math.round(current.temp_f)}°F</div>
                         <p class="text-xl text-gray-600">${current.condition.text}</p>
                     </div>
                     <div class="text-center md:text-left">
                         <div class="space-y-4">
                             <p class="flex items-center justify-center md:justify-start text-gray-600">
-                                <i class="fas fa-wind w-8"></i>
+                                <em class="fas fa-wind w-8"></em>
                                 <span>Wind: ${current.wind_mph} mph</span>
                             </p>
                             <p class="flex items-center justify-center md:justify-start text-gray-600">
-                                <i class="fas fa-tint w-8"></i>
+                                <em class="fas fa-tint w-8"></em>
                                 <span>Humidity: ${current.humidity}%</span>
                             </p>
                             <p class="flex items-center justify-center md:justify-start text-gray-600">
-                                <i class="fas fa-compress-arrows-alt w-8"></i>
+                                <em class="fas fa-compress-arrows-alt w-8"></em>
                                 <span>Pressure: ${current.pressure_mb} mb</span>
                             </p>
                         </div>

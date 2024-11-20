@@ -31,19 +31,19 @@
   <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
     <div class="bg-white rounded-lg shadow p-4">
       <h2 class="text-lg font-semibold mb-2">Active Alerts</h2>
-      <p class="text-3xl font-bold text-blue-600">{{ active_alerts_count }}</p>
+      <h3 class="text-3xl font-bold text-blue-600">{{ active_alerts_count }}</h2>
     </div>
     <div class="bg-white rounded-lg shadow p-4">
       <h2 class="text-lg font-semibold mb-2">Locations</h2>
-      <p class="text-3xl font-bold text-green-600">{{ monitored_locations_count }}</p>
+      <h3 class="text-3xl font-bold text-green-600">{{ monitored_locations_count }}</h3>
     </div>
     <div class="bg-white rounded-lg shadow p-4">
       <h2 class="text-lg font-semibold mb-2">Recent Triggers</h2>
-      <p class="text-3xl font-bold text-yellow-600">{{ recent_triggers_count }}</p>
+      <h3 class="text-3xl font-bold text-yellow-600">{{ recent_triggers_count }}</h3>
     </div>
     <div class="bg-white rounded-lg shadow p-4">
       <h2 class="text-lg font-semibold mb-2">Notifications Sent</h2>
-      <p class="text-3xl font-bold text-purple-600">{{ notifications_sent_count }}</p>
+      <h3 class="text-3xl font-bold text-purple-600">{{ notifications_sent_count }}</h3>
     </div>
   </div>
 
@@ -112,7 +112,7 @@
               <td class="border px-4 py-2">
                   <div class="flex items-center space-x-2">
                       {% if forecast.condition_icon %}
-                      <img src="{{ forecast.condition_icon }}" alt="{{ forecast.condition }}" class="w-8 h-8">
+                      <img src="{{ forecast.condition_icon }}" alt="{{ forecast.condition }}_{{ forloop.counter }}" class="w-8 h-8">
                       {% endif %}
                       <span>{{ forecast.condition }}</span>
                   </div>
@@ -165,7 +165,7 @@
               
               <div class="grid grid-cols-2 gap-4">
                   <div>
-                      <label class="block text-sm font-medium text-gray-700">Minimum Temperature</label>
+                      <label for="id_min_temp_c" class="block text-sm font-medium text-gray-700">Minimum Temperature</label>
                       <div class="mt-1 relative rounded-md shadow-sm">
                           {{ form.min_temp_c }}
                           {% if form.min_temp_c.errors %}
@@ -177,7 +177,7 @@
                       </div>
                   </div>
                   <div>
-                      <label class="block text-sm font-medium text-gray-700">Maximum Temperature</label>
+                      <label for="id_max_temp_c" class="block text-sm font-medium text-gray-700">Maximum Temperature</label>
                       <div class="mt-1 relative rounded-md shadow-sm">
                           {{ form.max_temp_c }}
                           {% if form.max_temp_c.errors %}
@@ -195,6 +195,7 @@
           <div class="space-y-4 pt-6 border-t">
               <h4 class="text-sm font-medium text-gray-900">Rain Probability</h4>
               <div class="relative">
+                <label for="id_rain_probability">Probability:</label>
                   {{ form.rain_probability }}
                   {% if form.rain_probability.errors %}
                     <p class='error-message'>{{ form.rain_probability.errors }}</p>
@@ -204,36 +205,43 @@
 
           <!-- Notification Settings -->
           <div class="space-y-4 pt-6 border-t">
-              <h4 class="text-sm font-medium text-gray-900">Notification Methods</h4>
-              <div class="space-y-3">
-                  <label class="flex items-center">
-                      <input type="checkbox" 
-                             name="notifyEmail" 
-                             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                      <span class="ml-3 text-sm text-gray-700">Email Notifications</span>
-                  </label>
-                  <label class="flex items-center">
-                      <input type="checkbox" 
-                             name="notifyBrowser" 
-                             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                      <span class="ml-3 text-sm text-gray-700">Browser Notifications</span>
-                  </label>
-              </div>
-          </div>
+            <fieldset>
+                <legend class="text-sm font-medium text-gray-900">Notification Methods</legend>
+                <div class="space-y-3">
+                    <label class="flex items-center" for="emailNotifications">
+                        <input type="checkbox" 
+                               name="notifyEmail" 
+                               id="emailNotifications"
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <span class="ml-3 text-sm text-gray-700">Email Notifications</span>
+                    </label>
+                    <label class="flex items-center" for="browserNotifications">
+                        <input type="checkbox" 
+                               name="notifyBrowser" 
+                               id="browserNotifications"
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <span class="ml-3 text-sm text-gray-700">Browser Notifications</span>
+                    </label>
+                </div>
+            </fieldset>
+        </div>
+        
 
           <!-- Notification Settings -->
           <div class="space-y-4 pt-6 border-t">
             <h4 class="text-sm font-medium text-gray-900">Alert Types</h4>
             <div class="space-y-3">
-                <label class="flex items-center">
+                <label class="flex items-center" for="visualAlerts">
                     <input type="checkbox" 
                            name="notifyEmail" 
+                           id="visualAlerts"
                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                     <span class="ml-3 text-sm text-gray-700">Visual Alerts</span>
                 </label>
-                <label class="flex items-center">
+                <label class="flex items-center" for="auditoryAlerts">
                     <input type="checkbox" 
-                           name="notifyBrowser" 
+                           name="notifyBrowser"
+                           id="auditoryAlerts"
                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                     <span class="ml-3 text-sm text-gray-700">Auditory Alerts</span>
                 </label>

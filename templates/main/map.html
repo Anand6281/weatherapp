@@ -78,21 +78,22 @@
                     <h1 class="text-xl font-bold text-gray-900">Weather Map</h1>
                     <div class="hidden sm:flex space-x-2">
                         <button class="control-button active" data-map-type="streets">
-                            <i class="fas fa-map-marked-alt mr-2"></i>Map View
+                            <em class="fas fa-map-marked-alt mr-2"></em>Map View
                         </button>
                         <button class="control-button" data-map-type="satellite">
-                            <i class="fas fa-satellite mr-2"></i>Satellite
+                            <em class="fas fa-satellite mr-2"></em>Satellite
                         </button>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="relative">
+                        <label for="location-search">Search:</label>
                         <input type="text" id="location-search" placeholder="Search location..." 
                                class="w-64 px-4 py-2 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500">
-                        <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+                        <em class="fas fa-search absolute right-3 top-3 text-gray-400"></em>
                     </div>
                     <button class="control-button" id="current-location" style="display: none;">
-                        <i class="fas fa-location-arrow mr-2"></i>Current Location
+                        <em class="fas fa-location-arrow mr-2"></em>Current Location
                     </button>
                 </div>
             </div>

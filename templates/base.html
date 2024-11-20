@@ -42,6 +42,29 @@
       html {
         scroll-behavior: smooth;
       }
+      .leaflet-popup-close-button {
+        opacity: 1;
+        color: rgb(0, 0, 0) !important;
+        background-color: rgb(255, 255, 255) !important;
+      }
+      .side-image::before {
+        background: rgba(0,0,0,1);
+      }
+      .side-image-content {
+        background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1)) !important;
+      }
+      .bg-blue-500 {
+        background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1)) !important;
+      }
+      .text-yellow-600 {
+        color: red !important;
+      }
+      .bg-gray-100 th.text-gray-500 {
+        color: #000 !important;
+      }
+      h1.logo {
+        display: inline;
+      }
     </style>
 
     {% block custom_css %}{% endblock %}
@@ -53,9 +76,9 @@
         <div class="flex justify-between h-16">
           <!-- Logo and Desktop Navigation -->
           <div class="flex items-center">
-            <a href="{% url 'main:home' %}" class="flex items-center">
-              <i class="fas fa-cloud-sun text-2xl mr-2"></i>
-              <span class="font-bold text-xl">WeatherAlert</span>
+            <a href="{% url 'main:home' %}?page=home" class="flex items-center">
+              <em class="fas fa-cloud-sun text-2xl mr-2"></em>
+              <h1 class="logo font-bold text-xl">WeatherAlert</h1>
             </a>
 
             <!-- Desktop Navigation Items -->
@@ -74,11 +97,11 @@
               {% if user.is_authenticated %}
               <div class="relative group">
                 <button class="flex items-center space-x-2 hover:text-blue-200 transition-colors" id="profileBtn">
-                  <i class="fas fa-user-circle text-xl"></i>
+                  <em class="fas fa-user-circle text-xl"></em>
                   <span>{{ request.user.get_name }}</span>
                 </button>
                 <div class="absolute right-0 w-48 mt-2 py-2 bg-white rounded-lg shadow-xl hidden" id="profileMenu">
-                  <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white" style="display: none;">Profile</a>
+                  <a href="/" class="block px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white" style="display: none;">Profile</a>
                   <a href="{% url 'users:logout' %}" class="block px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white">Logout</a>
                 </div>
               </div>
@@ -91,7 +114,7 @@
             <!-- Mobile Menu Button -->
             <div class="md:hidden flex items-center">
               <button id="mobile-menu-button" class="text-white hover:text-blue-200">
-                <i class="fas fa-bars text-2xl"></i>
+                <em class="fas fa-bars text-2xl">☰</em>
               </button>
             </div>
           </div>
@@ -100,16 +123,16 @@
         <!-- Mobile Navigation Menu -->
         <div id="mobile-menu" class="md:hidden hidden pb-4">
           <div class="flex flex-col space-y-4">
-            <a href="#" class="hover:text-blue-200 transition-colors">Home</a>
-            <a href="#" class="hover:text-blue-200 transition-colors">Weather Map</a>
-            <a href="#" class="hover:text-blue-200 transition-colors">My Alerts</a>
-            <a href="#" class="hover:text-blue-200 transition-colors">Preferences</a>
+            <a href="/" class="hover:text-blue-200 transition-colors">Home</a>
+            <a href="/" class="hover:text-blue-200 transition-colors">Weather Map</a>
+            <a href="/" class="hover:text-blue-200 transition-colors">My Alerts</a>
+            <a href="/" class="hover:text-blue-200 transition-colors">Preferences</a>
             {% if user.is_authenticated %}
-            <a href="#" class="hover:text-blue-200 transition-colors">Profile</a>
-            <a href="#" class="hover:text-blue-200 transition-colors">Logout</a>
+            <a href="/" class="hover:text-blue-200 transition-colors">Profile</a>
+            <a href="/" class="hover:text-blue-200 transition-colors">Logout</a>
             {% else %}
-            <a href="#" class="hover:text-blue-200 transition-colors">Login</a>
-            <a href="#" class="hover:text-blue-200 transition-colors">Register</a>
+            <a href="/" class="hover:text-blue-200 transition-colors">Login</a>
+            <a href="/" class="hover:text-blue-200 transition-colors">Register</a>
             {% endif %}
           </div>
         </div>
@@ -155,17 +178,17 @@
           <div>
             <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
             <ul class="space-y-2">
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href="/" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+              <li><a href="/" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+              <li><a href="/" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
             </ul>
           </div>
           <div>
             <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
             <div class="flex space-x-4">
-              <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook"></i></a>
-              <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+              <a href="/" class="text-gray-400 hover:text-white transition-colors"><em class="fab fa-twitter"></em>X</a>
+              <a href="/" class="text-gray-400 hover:text-white transition-colors"><em class="fab fa-facebook"></em>FB</a>
+              <a href="/" class="text-gray-400 hover:text-white transition-colors"><em class="fab fa-instagram"></em>Insta</a>
             </div>
           </div>
         </div>
@@ -204,7 +227,7 @@
                     <div class="flex items-center p-4 mb-4 text-white rounded-lg ${alertClasses[type]} alert-dismissible">
                         <span class="flex-grow">${message}</span>
                         <button type="button" class="ml-4 text-white hover:text-gray-200 focus:outline-none alert-close">
-                            <i class="fas fa-times"></i>
+                            <em class="fas fa-times"></em>
                         </button>
                     </div>
                 `).hide();

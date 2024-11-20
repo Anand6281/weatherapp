@@ -92,21 +92,20 @@
     <h1 class="text-2xl font-bold text-gray-900 mb-6">Account Preferences</h1>
 
     <form id="preferencesForm" class="space-y-6">
-        <!-- Account Settings -->
         <div class="settings-section">
             <h2 class="section-title">Account Settings</h2>
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" value="user@example.com">
+                    <label for="email-input" class="form-label">Email Address</label>
+                    <input type="email" id="email-input" class="form-input" value="user@example.com">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-input" value="+1 (555) 123-4567">
+                    <label for="phone-input" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone-input" class="form-input" value="+1 (555) 123-4567">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Time Zone</label>
-                    <select class="form-select">
+                    <label for="timezone-select" class="form-label">Time Zone</label>
+                    <select id="timezone-select" class="form-select">
                         <option value="America/New_York">Eastern Time (ET)</option>
                         <option value="America/Chicago">Central Time (CT)</option>
                         <option value="America/Denver">Mountain Time (MT)</option>
@@ -114,8 +113,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Language</label>
-                    <select class="form-select">
+                    <label for="language-select" class="form-label">Language</label>
+                    <select id="language-select" class="form-select">
                         <option value="en">English</option>
                         <option value="es">Español</option>
                         <option value="fr">Français</option>
@@ -125,32 +124,31 @@
             </div>
         </div>
 
-        <!-- Notification Preferences -->
         <div class="settings-section">
             <h2 class="section-title">Notification Preferences</h2>
             
             <div class="space-y-6">
                 <div>
-                    <label class="form-label">Notification Methods</label>
+                    <span class="form-label">Notification Methods</span>
                     <div class="form-checkbox-group">
                         <div class="checkbox-item">
-                            <input type="checkbox" class="form-checkbox" checked>
-                            <label class="checkbox-label">Email Notifications</label>
+                            <input type="checkbox" id="email-notifications" class="form-checkbox" checked>
+                            <label for="email-notifications" class="checkbox-label">Email Notifications</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" class="form-checkbox" checked>
-                            <label class="checkbox-label">SMS Notifications</label>
+                            <input type="checkbox" id="sms-notifications" class="form-checkbox" checked>
+                            <label for="sms-notifications" class="checkbox-label">SMS Notifications</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" class="form-checkbox" checked>
-                            <label class="checkbox-label">Push Notifications</label>
+                            <input type="checkbox" id="push-notifications" class="form-checkbox" checked>
+                            <label for="push-notifications" class="checkbox-label">Push Notifications</label>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label class="form-label">Notification Frequency</label>
-                    <select class="form-select">
+                    <label for="notification-frequency" class="form-label">Notification Frequency</label>
+                    <select id="notification-frequency" class="form-select">
                         <option>Immediately</option>
                         <option>Hourly Digest</option>
                         <option>Daily Digest</option>
@@ -159,22 +157,22 @@
                 </div>
 
                 <div>
-                    <label class="form-label">Quiet Hours</label>
+                    <span class="form-label">Quiet Hours</span>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-sm text-gray-600">Start Time</label>
-                            <input type="time" class="form-input" value="22:00">
+                            <label for="quiet-start" class="text-sm text-gray-600">Start Time</label>
+                            <input type="time" id="quiet-start" class="form-input" value="22:00">
                         </div>
                         <div>
-                            <label class="text-sm text-gray-600">End Time</label>
-                            <input type="time" class="form-input" value="07:00">
+                            <label for="quiet-end" class="text-sm text-gray-600">End Time</label>
+                            <input type="time" id="quiet-end" class="form-input" value="07:00">
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label class="form-label">Notification Preview</label>
-                    <div class="notification-preview">
+                    <span for="notification-preview" class="form-label">Notification Preview</span>
+                    <div id="notification-preview" class="notification-preview">
                         <div class="text-sm text-gray-600">Sample Weather Alert</div>
                         <div class="mt-2">⛈️ Severe thunderstorm warning for New York City. Expected within the next hour.</div>
                     </div>
@@ -182,28 +180,30 @@
             </div>
         </div>
 
-        <!-- Display Preferences -->
         <div class="settings-section">
             <h2 class="section-title">Display Preferences</h2>
             
             <div class="space-y-6">
                 <div class="form-group">
-                    <label class="form-label">Temperature Unit</label>
-                    <div class="flex space-x-4">
-                        <label class="checkbox-item">
-                            <input type="radio" name="tempUnit" value="fahrenheit" checked class="form-radio">
-                            <span class="ml-2">Fahrenheit (°F)</span>
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="radio" name="tempUnit" value="celsius" class="form-radio">
-                            <span class="ml-2">Celsius (°C)</span>
-                        </label>
-                    </div>
+                    <fieldset>
+                        <legend class="form-label">Temperature Unit</legend>
+                        <div class="flex space-x-4">
+                            <label for="temp-f" class="checkbox-item">
+                                <input type="radio" id="temp-f" name="tempUnit" value="fahrenheit" checked class="form-radio">
+                                <span class="ml-2">Fahrenheit (°F)</span>
+                            </label>
+                            <label for="temp-c" class="checkbox-item">
+                                <input type="radio" id="temp-c" name="tempUnit" value="celsius" class="form-radio">
+                                <span class="ml-2">Celsius (°C)</span>
+                            </label>
+                        </div>
+                    </fieldset>
                 </div>
+                
 
                 <div class="form-group">
-                    <label class="form-label">Wind Speed Unit</label>
-                    <select class="form-select">
+                    <label for="wind-speed" class="form-label">Wind Speed Unit</label>
+                    <select id="wind-speed" class="form-select">
                         <option value="mph">Miles per hour (mph)</option>
                         <option value="kph">Kilometers per hour (km/h)</option>
                         <option value="ms">Meters per second (m/s)</option>
@@ -212,28 +212,28 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Precipitation Unit</label>
-                    <select class="form-select">
+                    <label for="precipitation" class="form-label">Precipitation Unit</label>
+                    <select id="precipitation" class="form-select">
                         <option value="in">Inches (in)</option>
                         <option value="mm">Millimeters (mm)</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Map Display</label>
+                    <span class="form-label">Map Display</span>
                     <div class="space-y-2">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="toggle-input" checked>
+                        <label for="radar-overlay" class="toggle-switch">
+                            <input type="checkbox" id="radar-overlay" class="toggle-input" checked>
                             <span class="toggle-slider"></span>
                             <span class="ml-3 text-sm">Show radar overlay</span>
                         </label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="toggle-input" checked>
+                        <label for="temp-overlay" class="toggle-switch">
+                            <input type="checkbox" id="temp-overlay" class="toggle-input" checked>
                             <span class="toggle-slider"></span>
                             <span class="ml-3 text-sm">Show temperature overlay</span>
                         </label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="toggle-input">
+                        <label for="wind-overlay" class="toggle-switch">
+                            <input type="checkbox" id="wind-overlay" class="toggle-input">
                             <span class="toggle-slider"></span>
                             <span class="ml-3 text-sm">Show wind overlay</span>
                         </label>
@@ -242,19 +242,18 @@
             </div>
         </div>
 
-        <!-- Data Privacy -->
         <div class="settings-section">
             <h2 class="section-title">Data Privacy</h2>
             
             <div class="space-y-4">
-                <label class="toggle-switch">
-                    <input type="checkbox" class="toggle-input" checked>
+                <label for="share-data" class="toggle-switch">
+                    <input type="checkbox" id="share-data" class="toggle-input" checked>
                     <span class="toggle-slider"></span>
                     <span class="ml-3 text-sm">Share anonymous usage data to improve service</span>
                 </label>
 
-                <label class="toggle-switch">
-                    <input type="checkbox" class="toggle-input" checked>
+                <label for="location-tracking" class="toggle-switch">
+                    <input type="checkbox" id="location-tracking" class="toggle-input" checked>
                     <span class="toggle-slider"></span>
                     <span class="ml-3 text-sm">Allow location tracking for better accuracy</span>
                 </label>
@@ -270,13 +269,13 @@
             </div>
         </div>
 
-        <!-- Save Button -->
         <div class="flex justify-end">
-            <button type="submit" class="btn-save">
-                Save Preferences
+            <button type="submit" class="inline-flex justify-center rounded-md bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                Save Changes
             </button>
         </div>
-    </form>
+        
+
 </div>
 {% endblock %}
 

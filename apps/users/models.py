@@ -65,9 +65,9 @@ class Preference(models.Model):
 
 class Alert(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    min_temp_c = models.FloatField(default=20, help_text="Set minimum temperature in Celsius.")
-    max_temp_c = models.FloatField(default=40, help_text="Set maximum temperature in Celsius.")
-    rain_probability = models.FloatField(default=70, help_text="Set rain probability in percentage.")
+    min_temp_c = models.FloatField(default=20)
+    max_temp_c = models.FloatField(default=40)
+    rain_probability = models.FloatField(default=70)
     message = models.CharField(max_length=255, null=True, blank=True)
     is_shown = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
